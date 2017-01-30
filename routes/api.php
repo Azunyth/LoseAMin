@@ -19,7 +19,7 @@ Route::get('user/connected', 'Api\UserController@getUsersConnected');
 
 Route::get('user/{id}/refill', 'Api\UserController@refillUserStack');
 
-Route::get('auth/logout', 'Api\AuthController@logout');
+Route::post('auth/logout', 'Api\AuthController@logout');
 
 Route::post('auth/login', 'Api\AuthController@login');
 

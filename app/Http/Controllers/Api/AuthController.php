@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use GuzzleHttp\Client as GuzzleClient;
 use Laravel\Passport\Client;
+use Laravel\Passport\Token;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -163,12 +164,46 @@ class AuthController extends Controller
             ]);
         }
 
-
-
          return \Route::dispatch($proxy);
     }
 
     public function logout(Request $request) {
-        var_dump("logout"); die;
+        $email = $request->input('email');
+
+        $validator = Validator::make($request->all(), [
+          'email' => 'required',
+        ]);
+
+        if($validator->fails()) {
+          return response()->json([
+              'status' => 400,
+              'error_code' => 'logout_data_fails',
+              'error' => 'Certaines données sont invalides',
+              'message' => $validator->errors()
+          ]);
+        }
+
+        try {
+            $user = \App\User::where('email', $email)->firstOrFail();
+
+            $user->is_connected = 0;
+            $user->save();
+
+            $oauthAccessToken = Token::where('client_id', $email)
+                                     ->update(['revoked' => 1]);
+
+            return response()->json([
+              'status' => 200,
+              'message' => htmlentities('Utilisateur déconnecté')
+            ]);
+
+        } catch(ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 401,
+                'error_code' => 'logout_no_result',
+                'message' => $e->getMessage()
+            ]);
+        }
+
     }
 }
