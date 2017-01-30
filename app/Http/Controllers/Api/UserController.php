@@ -22,7 +22,9 @@ class UserController extends Controller
 
           return response()->json([
             'status' => 200,
-            'user' => $user]);
+            'message' => htmlentities('Détail utilisateur'),
+            'user' => $user
+          ]);
 
       } catch (ModelNotFoundException $e) {
           return response()->json([
@@ -39,7 +41,9 @@ class UserController extends Controller
 
             return response()->json([
               'status' => 200,
-              'users' => $users]);
+              'message' => htmlentities('Liste des utilisateurs connectés'),
+              'users' => $users
+            ]);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -69,10 +73,22 @@ class UserController extends Controller
 
             $user->save();
 
+            return response()->json([
+              'status' => 200,
+              'message' => htmlentities('Utilisateur mis à jour'),
+              'user' => $user
+            ]);
+
         } catch(ModelNotFoundException $e) {
             return response()->json([
                 'status' => 400,
-                'error_code' => 'update_user_fail',
+                'error_code' => 'user_not_found',
+                'message' => $e->getMessage()
+            ]);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 400,
+                'error_code' => 'user_update_fail',
                 'message' => $e->getMessage()
             ]);
         }
@@ -89,7 +105,8 @@ class UserController extends Controller
 
             return response()->json([
               'status' => 200,
-              'message' => 'Utilisateur supprimé.']);
+              'message' => htmlentities('Utilisateur supprimé')
+            ]);
 
         } catch (ModelNotFoundException $e) {
             return response()->json([

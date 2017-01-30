@@ -82,7 +82,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => 200,
-            'message' => htmlentities('Utilisateur créé avec succès !'),
+            'message' => htmlentities('Utilisateur créé avec succès'),
             'user' => $oauth_client
         ]);
     }
@@ -99,7 +99,7 @@ class AuthController extends Controller
           return response()->json([
               'status' => 400,
               'error_code' => 'login_data_fails',
-              'error' => 'Certaines données sont invalides',
+              'error' => htmlentities('Certaines données sont invalides'),
               'message' => $validator->errors()
           ]);
         }
@@ -178,7 +178,7 @@ class AuthController extends Controller
           return response()->json([
               'status' => 400,
               'error_code' => 'logout_data_fails',
-              'error' => 'Certaines données sont invalides',
+              'error' => htmlentities('Certaines données sont invalides'),
               'message' => $validator->errors()
           ]);
         }
