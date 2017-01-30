@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('user/{id}', 'Api\UserController@getUser');
-
 Route::get('user/connected', 'Api\UserController@getUsersConnected');
+
+Route::get('user/{email}', 'Api\UserController@getUser');
 
 Route::get('user/{id}/refill', 'Api\UserController@refillUserStack');
 
@@ -25,6 +25,6 @@ Route::post('auth/login', 'Api\AuthController@login');
 
 Route::post('auth/register', 'Api\AuthController@createUser');
 
-Route::put('user/{id}', 'Api\UserController@updateUser');
+Route::put('user/{email}', 'Api\UserController@updateUser');
 
-Route::delete('user/{id}', 'Api\UserController@deleteUser');
+Route::delete('user/{email}', 'Api\UserController@deleteUser');
