@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use GuzzleHttp\Client as GuzzleClient;
 use Laravel\Passport\Client;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Validator;
@@ -84,6 +87,7 @@ class AuthController extends Controller
     }
 
     public function login(Request $request) {
+
         $validator = Validator::make($request->all(), [
           'email' => 'required|exists:users,email|exists:oauth_clients,id',
           'password' => 'required',
@@ -101,27 +105,70 @@ class AuthController extends Controller
 
         $email = $request->input('email');
         $password = $request->input('password');
-        $client = $request->input('client');
         $secret = $request->input('secret');
 
-        $request->request->add([
-            'grant_type'    => "password",
-            'client_id'     => $email,
-            'client_secret' => $secret,
-            'username'      => $email,
-            'password'      => $password,
-            'scope'         => '*',
-        ]);
+        try {
 
-        $proxy = Request::create(
-           'oauth/token',
-           'POST'
-         );
+            if(\Auth::attempt(['email' => $email, 'password' => $password])) {
+
+              $request->request->add([
+                  'grant_type'    => "password",
+                  'client_id'     => $email,
+                  'client_secret' => $secret,
+                  'username'      => $email,
+                  'password'      => $password,
+                  'scope'         => '*',
+              ]);
+
+              $proxy = Request::create(
+                 'oauth/token',
+                 'POST'
+               );
+
+               $tokenCall = \Route::dispatch($proxy);
+
+               $resContent = $tokenCall->getContent();
+               $resContentJson = json_decode($resContent);
+
+               if(property_exists($resContentJson, 'error')) {
+                 return response()->json([
+                     'status' => 401,
+                     'error_code' => 'bad_credentials',
+                     'message' => $resContentJson->message
+                   ]);
+               } else {
+                 $user = \App\User::where('email', $email)->first();
+                 $user->is_connected = 1;
+                 $user->save();
+                 return response()->json([
+                     'status' => 200,
+                     'tokens' => $resContentJson,
+                     'user' => $user
+                   ]);
+               }
+
+
+            }else {
+              return response()->json([
+                  'status' => 401,
+                  'error_code' => 'bad_credentials',
+                ]);
+            }
+
+        } catch(ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 401,
+                'error_code' => 'login_no_result',
+                'message' => $e->getMessage()
+            ]);
+        }
+
+
 
          return \Route::dispatch($proxy);
     }
 
     public function logout(Request $request) {
-        var_dump($request); die;
+        var_dump("logout"); die;
     }
 }
