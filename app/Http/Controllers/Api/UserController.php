@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use Laravel\Passport\Token;
-
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Controllers\Controller;
@@ -55,8 +55,47 @@ class UserController extends Controller
 
     }
 
-    public function refillUserStack($id) {
+    public function refillUserStack($email) {
+      try {
+          $user = \App\User::where('email', $email)->firstOrFail();
 
+          $current = Carbon::now();
+          $lastRefill = new Carbon($user->last_refill);
+
+          $diff = $current->diffInMinutes($lastRefill);
+          if($diff < 60){
+              return response()->json([
+                  'status' => 400,
+                  'error_code' => 'refill_too_soon',
+                  'message' => 'Vous devez attendre '.$diff.' minutes',
+                  'error' => [ 'minutes' => $diff ]
+              ]);
+          }
+
+          $user->stack += 100;
+          $user->last_refill = $current->toDateTimeString();
+
+          $user->save();
+
+          return response()->json([
+            'status' => 200,
+            'message' => htmlentities('Jetons mis à jour'),
+            'user' => $user
+          ]);
+
+      } catch(ModelNotFoundException $e) {
+          return response()->json([
+              'status' => 400,
+              'error_code' => 'user_not_found',
+              'message' => $e->getMessage()
+          ]);
+      } catch (\Exception $e) {
+          return response()->json([
+              'status' => 400,
+              'error_code' => 'user_connected_fail',
+              'message' => $e->getMessage()
+          ]);
+      }
     }
 
     public function updateUser(Request $request, $email) {
