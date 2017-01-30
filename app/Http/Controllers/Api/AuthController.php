@@ -112,6 +112,9 @@ class AuthController extends Controller
 
             if(\Auth::attempt(['email' => $email, 'password' => $password])) {
 
+              $oauthAccessToken = Token::where('client_id', $email)
+                                       ->update(['revoked' => 1]);
+
               $request->request->add([
                   'grant_type'    => "password",
                   'client_id'     => $email,
