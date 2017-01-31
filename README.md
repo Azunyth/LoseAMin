@@ -84,8 +84,8 @@ Retourne les details de l'utilisateur connecté sous la forme suivante
     "created_at": "YYYY-MM-DD HH:mm:ss",
     "updated_at": "YYYY-MM-DD HH:mm:ss",
     "firstname": "XXXX",
-    "lastname": "VERNOT",
-    "stack": 200,
+    "lastname": "XXXX",
+    "stack": XXX,
     "is_connected": 1,
     "last_refill": "YYYY-MM-DD HH:mm:ss"
   }
@@ -112,3 +112,42 @@ Retourne la liste des utilisateurs sous la forme suivante :
   ]
 }
 ```
+
+### Obtenir une recharge de jetons
+
+`GET` **/api/user/{email}/refill**
+
+La recharge ne peut se faire que toutes les heures
+
+Si l'utilisateur est autorisé à la faire, les details de l'utilisateur sont renvoyées par l'API
+
+Si l'utilisateur n'est pas autorisé, une réponse au format suivant est retournée
+
+```json
+{
+  "status": 400,
+  "error_code": "refill_too_soon",
+  "message": "Vous devez attendre X minutes",
+  "error": {
+    "minutes": X
+  }
+}
+```
+
+### Mettre à jour les données utilisateur
+
+`PUT` **/api/user/{email}**
+
+Le paramètre `{email}` représente l'email de l'utilisateur connecté
+
+La méthode doit recevoir un objet json de la sorte :
+```json
+{"firstname":"XXX", "lastname":"XXX", "username":"XXX" }
+```
+**Tous les paramètres ne sont pas obligatoires dans l'objet json envoyé**
+
+### Supprimer un utilisateur
+
+`DELETE` **/api/user/{email}**
+
+Le paramètre `{email}` représente l'email de l'utilisateur connecté
