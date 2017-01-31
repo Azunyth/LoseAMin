@@ -11,9 +11,9 @@ L'API se trouve sur l'URL suivante :
 
 ### Créer un utilisateur
 
-| Auth          | Verbe        | URL   |
-| ------------- | -------------| -----|
-| Non           | `POST`        | **/api/auth/register** |
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Non    | `POST`  | **/api/auth/register** |
 
 La méthode doit recevoir un objet json de la sorte :
 ```json
@@ -30,7 +30,9 @@ Retourne l'utilisateur ajouté
 
 ### Authentifier un utilisateur
 
-`POST` **/api/auth/login**
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Non    | `POST`  | **/api/auth/login** |
 
 La méthode doit recevoir un objet json de la sorte :
 ```json
@@ -60,7 +62,9 @@ Cette propriété est donc à conserver.**
 
 ### Deconnecter l'utilisateur
 
-`POST` **/api/auth/logout**
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Non    | `POST`  | **/api/auth/logout** |
 
 La méthode doit recevoir un objet json de la sorte :
 ```json
@@ -69,7 +73,9 @@ La méthode doit recevoir un objet json de la sorte :
 
 ### Obtenir les details de l'utilisateur
 
-`GET` **/api/user/{email}**
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `GET`   | **/api/user/{email}** |
 
 Le paramètre `{email}` représente l'email de l'utilisateur connecté
 
@@ -96,7 +102,9 @@ Retourne les details de l'utilisateur connecté sous la forme suivante
 
 ### Obtenir la liste des joueurs connectés
 
-`GET` **/api/user/connected**
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `GET`   | **/api/user/connected** |
 
 Retourne la liste des utilisateurs sous la forme suivante :
 
@@ -117,7 +125,9 @@ Retourne la liste des utilisateurs sous la forme suivante :
 
 ### Obtenir une recharge de jetons
 
-`GET` **/api/user/{email}/refill**
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `GET`   | **/api/user/{email}/refill** |
 
 La recharge ne peut se faire que toutes les heures
 
@@ -138,7 +148,9 @@ Si l'utilisateur n'est pas autorisé, une réponse au format suivant est retourn
 
 ### Mettre à jour les données utilisateur
 
-`PUT` **/api/user/{email}**
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `PUT`   | **/api/user/{email}** |
 
 Le paramètre `{email}` représente l'email de l'utilisateur connecté
 
@@ -150,13 +162,17 @@ La méthode doit recevoir un objet json de la sorte :
 
 ### Supprimer un utilisateur
 
-`DELETE` **/api/user/{email}**
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `DELETE`| **/api/user/{email}** |
 
 Le paramètre `{email}` représente l'email de l'utilisateur connecté
 
 ### Obtenir la liste des tables ouvertes
 
-`GET` **/api/table/opened**
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `GET`   | **/api/table/opened** |
 
 Retourne la liste des tables ouvertes sous la forme suivante :
 
