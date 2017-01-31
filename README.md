@@ -6,6 +6,13 @@ L'API se trouve sur l'URL suivante :
 
 - [http://demo.comte.re](http://demo.comte.re)
 
+## Specification des requêtes
+
+Les requêtes authentifiées doivent être composées des **headers** suivants :
+```
+Accept: application/json
+Authorization: Bearer `Votre access_token`
+```
 
 ## Routes
 
