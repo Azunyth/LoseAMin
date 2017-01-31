@@ -11,17 +11,24 @@ L'API se trouve sur l'URL suivante :
 
 ### Créer un utilisateur
 
-`POST` /api/auth/register
+`POST` **/api/auth/register**
 
 La méthode doit recevoir un objet json de la sorte :
 ```json
-{"user" : { "username":"XXX", "firsntame":"XXX", "lastname":"XXX", "email":"XXX@XX.XX", "password":"XXX"  }}
+{"user" : {
+    "username":"XXX",
+    "firsntame":"XXX",
+    "lastname":"XXX",
+    "email":"XXX@XX.XX",
+    "password":"XXX"  
+    }
+}
 ```
 Retourne l'utilisateur ajouté
 
 ### Authentifier un utilisateur
 
-`POST` /api/auth/login
+`POST` **/api/auth/login**
 
 La méthode doit recevoir un objet json de la sorte :
 ```json
@@ -51,7 +58,7 @@ Cette propriété est donc à conserver.**
 
 ### Deconnecter l'utilisateur
 
-`POST` /api/auth/logout
+`POST` **/api/auth/logout**
 
 La méthode doit recevoir un objet json de la sorte :
 ```json
