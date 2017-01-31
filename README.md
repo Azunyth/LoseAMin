@@ -151,3 +151,24 @@ La méthode doit recevoir un objet json de la sorte :
 `DELETE` **/api/user/{email}**
 
 Le paramètre `{email}` représente l'email de l'utilisateur connecté
+
+### Obtenir la liste des tables ouvertes
+
+`GET` **/api/table/opened**
+
+Retourne la liste des tables ouvertes sous la forme suivante :
+
+```json
+{
+  "status": 200,
+  "message": "Liste des tables ouvertes",
+  "tables": [
+      {
+          ...
+      },
+      {
+          ...
+      }
+  ]
+}
+```
