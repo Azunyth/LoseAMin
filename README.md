@@ -64,3 +64,51 @@ La méthode doit recevoir un objet json de la sorte :
 ```json
 {"email":"XXX@XX.XX" }
 ```
+
+### Obtenir les details de l'utilisateur
+
+`GET` **/api/user/{email}**
+
+Le paramètre `{email}` représente l'email de l'utilisateur connecté
+
+Retourne les details de l'utilisateur connecté sous la forme suivante
+
+```json
+{
+  "status": 200,
+  "message": "D&eacute;tail utilisateur",
+  "user": {
+    "id": X,
+    "username": "XXXX",
+    "email": "XXXX@XXX.XXX",
+    "created_at": "YYYY-MM-DD HH:mm:ss",
+    "updated_at": "YYYY-MM-DD HH:mm:ss",
+    "firstname": "XXXX",
+    "lastname": "VERNOT",
+    "stack": 200,
+    "is_connected": 1,
+    "last_refill": "YYYY-MM-DD HH:mm:ss"
+  }
+}
+```
+
+### Obtenir la liste des joueurs connectés
+
+`GET` **/api/user/connected**
+
+Retourne la liste des utilisateurs sous la forme suivante :
+
+```json
+{
+  "status": 200,
+  "message": "Liste des utilisateurs connect&eacute;s",
+  "users": [
+    {
+      ...
+    },
+    {
+      ...
+    }
+  ]
+}
+```
