@@ -11,8 +11,28 @@ L'API se trouve sur l'URL suivante :
 Les requêtes authentifiées doivent être composées des **headers** suivants :
 ```
 Accept: application/json
-Authorization: Bearer `Votre access_token`
+Authorization: Bearer 'Votre access_token'
 ```
+
+Une requête authentifiée avec les mauvais identifiants retourne l'erreur suivante :
+```json
+{"error": "Unauthenticated"}
+```
+
+Les autres retour d'erreur sont sous la forme suivante :
+```json
+{
+    "status" : XXX,
+    "error_code" : "XXX",
+    "error" : "XXX",
+    "message" : "XXX"
+}
+```
+| Paramètre   | Description   |
+| ------ | ------- |
+| error_code    | Chaine de caractère qui représente un code erreur  |
+| error    | Chaine de caractère qui représente l'erreur  |
+| message    | Message de l'exception  |
 
 ## Routes
 
