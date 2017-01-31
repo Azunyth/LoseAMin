@@ -8,3 +8,7 @@ L'API se trouve sur l'URL suivante :
 
 
 ## Routes
+
+### Créer un utilisateur
+
+** ~~POST~~ api/auth/register **
