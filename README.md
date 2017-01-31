@@ -11,4 +11,4 @@ L'API se trouve sur l'URL suivante :
 
 ### Créer un utilisateur
 
-** ~~POST~~ api/auth/register **
+**POST api/auth/register**
