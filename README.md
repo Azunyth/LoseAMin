@@ -11,6 +11,10 @@ L'API se trouve sur l'URL suivante :
 
 ### Créer un utilisateur
 
+| Auth          | METHOD        | URL   |
+| ------------- |:-------------:| -----:|
+| Non           | `POST`        | **/api/auth/register** |
+
 `POST` **/api/auth/register**
 
 La méthode doit recevoir un objet json de la sorte :
