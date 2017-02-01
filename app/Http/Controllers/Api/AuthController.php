@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Table;
 use GuzzleHttp\Client as GuzzleClient;
 use Laravel\Passport\Client;
 use Laravel\Passport\Token;
@@ -188,6 +189,13 @@ class AuthController extends Controller
 
         try {
             $user = \App\User::where('email', $email)->firstOrFail();
+
+            foreach($user->tables as $table) {
+                if($user->tables()->detach($table->id)) {
+                    $table->seats_available += 1;
+                    $table->save();
+                }
+            }
 
             $user->is_connected = 0;
             $user->save();

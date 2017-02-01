@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Table;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Controllers\Controller;
@@ -51,12 +52,14 @@ class TableController extends Controller
                 $user->tables()->attach($id);
 
                 $table->seats_available -= 1;
+                $table->last_activity = Carbon::now()->toDateTimeString();
                 $table->save();
 
                 return response()->json([
                     'status' => 200,
                     'message' => htmlentities('Place à la table autorisée'),
-                    'user' => $user
+                    'user' => $user,
+                    'table' => $table
                 ]);
             }else {
                 return response()->json([
@@ -92,12 +95,14 @@ class TableController extends Controller
 
             if($user->tables()->detach($id)) {
                 $table->seats_available += 1;
+                $table->last_activity = Carbon::now()->toDateTimeString();
                 $table->save();
 
                 return response()->json([
                     'status' => 200,
                     'message' => htmlentities('Place à la table restaurée'),
-                    'user' => $user
+                    'user' => $user,
+                    'table' => $table
                 ]);
             }else {
                 return response()->json([
