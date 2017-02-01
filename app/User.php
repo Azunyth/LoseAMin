@@ -28,4 +28,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function tables() {
+        return $this->belongsToMany('App\Table', 'users_tables')
+                    ->withTimestamps();
+    }
 }

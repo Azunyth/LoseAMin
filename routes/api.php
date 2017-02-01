@@ -21,6 +21,10 @@ Route::get('user/{id}/refill', 'Api\UserController@refillUserStack');
 
 Route::get('table/opened', 'Api\TableController@getAllTables');
 
+Route::get('user/{email}/table/{id}/sit', 'Api\TableController@sitOnTable');
+
+Route::get('user/{email}/table/{id}/leave', 'Api\TableController@leaveTable');
+
 Route::post('auth/logout', 'Api\AuthController@logout');
 
 Route::post('auth/login', 'Api\AuthController@login');
