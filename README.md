@@ -1,40 +1,219 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+# API documentation
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+## URL
 
-## About Laravel
+L'API se trouve sur l'URL suivante :
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+- [http://demo.comte.re](http://demo.comte.re)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Specification des requêtes
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+Les requêtes authentifiées doivent être composées des **headers** suivants :
+```
+Accept: application/json
+Authorization: Bearer 'Votre access_token'
+```
 
-## Learning Laravel
+Une requête authentifiée avec les mauvais identifiants retourne l'erreur suivante :
+```json
+{"error": "Unauthenticated"}
+```
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+Les autres retour d'erreur sont sous la forme suivante :
+```json
+{
+    "status" : XXX,
+    "error_code" : "XXX",
+    "error" : "XXX",
+    "message" : "XXX"
+}
+```
+| Paramètre   | Description   |
+| ------ | ------- |
+| error_code    | Chaine de caractère qui représente un code erreur  |
+| error    | Chaine de caractère qui représente l'erreur  |
+| message    | Message de l'exception  |
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+## Routes
 
-## Contributing
+### Créer un utilisateur
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Non    | `POST`  | **/api/auth/register** |
 
-## Security Vulnerabilities
+La méthode doit recevoir un objet json de la sorte :
+```json
+{"user" : {
+    "username":"XXX",
+    "firsntame":"XXX",
+    "lastname":"XXX",
+    "email":"XXX@XX.XX",
+    "password":"XXX"  
+    }
+}
+```
+Retourne l'utilisateur ajouté
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+### Authentifier un utilisateur
 
-## License
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Non    | `POST`  | **/api/auth/login** |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+La méthode doit recevoir un objet json de la sorte :
+```json
+{"email":"XXX@XX.XX", "password":"XXX", "secret":"XXX" }
+```
+Le paramètre `secret` doit être un md5 du mot de passe en basse 64
+
+Retourne la réponse suivante si valide :
+```json
+    {
+       "status":"XXX",
+       "tokens": {
+         "token_type" : "XXXX",
+         "expires_in" : "XXXX",
+         "access_token" : "XXXX",
+         "refresh_token" : "XXXX"
+        },
+        "user" : {
+            ...
+        }
+     }
+```
+La propriété `user` représente l'utilisateur connecté.
+La propriété `tokens` représente les jetons de l'utilisateur.
+**La sous propriété `access_token` est très importante, elle représente le jeton d'authentification à utilier pour les requêtes authentifiées.
+Cette propriété est donc à conserver.**
+
+### Deconnecter l'utilisateur
+
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Non    | `POST`  | **/api/auth/logout** |
+
+La méthode doit recevoir un objet json de la sorte :
+```json
+{"email":"XXX@XX.XX" }
+```
+
+### Obtenir les details de l'utilisateur
+
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `GET`   | **/api/user/{email}** |
+
+Le paramètre `{email}` représente l'email de l'utilisateur connecté
+
+Retourne les details de l'utilisateur connecté sous la forme suivante
+
+```json
+{
+  "status": 200,
+  "message": "D&eacute;tail utilisateur",
+  "user": {
+    "id": X,
+    "username": "XXXX",
+    "email": "XXXX@XXX.XXX",
+    "created_at": "YYYY-MM-DD HH:mm:ss",
+    "updated_at": "YYYY-MM-DD HH:mm:ss",
+    "firstname": "XXXX",
+    "lastname": "XXXX",
+    "stack": XXX,
+    "is_connected": 1,
+    "last_refill": "YYYY-MM-DD HH:mm:ss"
+  }
+}
+```
+
+### Obtenir la liste des joueurs connectés
+
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `GET`   | **/api/user/connected** |
+
+Retourne la liste des utilisateurs sous la forme suivante :
+
+```json
+{
+  "status": 200,
+  "message": "Liste des utilisateurs connect&eacute;s",
+  "users": [
+    {
+      ...
+    },
+    {
+      ...
+    }
+  ]
+}
+```
+
+### Obtenir une recharge de jetons
+
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `GET`   | **/api/user/{email}/refill** |
+
+La recharge ne peut se faire que toutes les heures
+
+Si l'utilisateur est autorisé à la faire, les details de l'utilisateur sont renvoyées par l'API
+
+Si l'utilisateur n'est pas autorisé, une réponse au format suivant est retournée
+
+```json
+{
+  "status": 400,
+  "error_code": "refill_too_soon",
+  "message": "Vous devez attendre X minutes",
+  "error": {
+    "minutes": X
+  }
+}
+```
+
+### Mettre à jour les données utilisateur
+
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `PUT`   | **/api/user/{email}** |
+
+Le paramètre `{email}` représente l'email de l'utilisateur connecté
+
+La méthode doit recevoir un objet json de la sorte :
+```json
+{"firstname":"XXX", "lastname":"XXX", "username":"XXX" }
+```
+**Tous les paramètres ne sont pas obligatoires dans l'objet json envoyé**
+
+### Supprimer un utilisateur
+
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `DELETE`| **/api/user/{email}** |
+
+Le paramètre `{email}` représente l'email de l'utilisateur connecté
+
+### Obtenir la liste des tables ouvertes
+
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `GET`   | **/api/table/opened** |
+
+Retourne la liste des tables ouvertes sous la forme suivante :
+
+```json
+{
+  "status": 200,
+  "message": "Liste des tables ouvertes",
+  "tables": [
+      {
+          ...
+      },
+      {
+          ...
+      }
+  ]
+}
+```
