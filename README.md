@@ -75,6 +75,8 @@ La méthode doit recevoir un objet json de la sorte :
 {"email":"XXX@XX.XX", "password":"XXX", "secret":"XXX" }
 ```
 Le paramètre `secret` doit être un md5 du mot de passe en basse 64
+Par exemple :
+Le mot de passe `test123` après un hash md5 encoder en base64 donne le résultat : `USwsQMmkMOIH3XIM4H3dhwoglGcPDwBJBi2XErHjjSs=`
 
 Retourne la réponse suivante si valide :
 ```json
