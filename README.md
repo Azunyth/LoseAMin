@@ -57,11 +57,11 @@ Retourne l'utilisateur ajouté
 
 Erreurs :
 
-| error_code   | Description   |
-| ------ | ------- |
-| register_data_empty    | Données manquantes  |
-| register_data_fails    | Données non conformes aux attentes  |
-| register_insert_fail    | Erreur SQL  |
+| error_code   | Description   | Status |
+| ------ | ------- | ------- |
+| register_data_empty    | Données manquantes  | 400 |
+| register_data_fails    | Données non conformes aux attentes  | 400 |
+| register_insert_fail    | Erreur SQL  | 400 |
 
 
 ### Authentifier un utilisateur
@@ -98,11 +98,11 @@ Cette propriété est donc à conserver.**
 
 Erreurs :
 
-| error_code   | Description   |
-| ------ | ------- |
-| login_data_fails    | Données non conformes aux attentes  |
-| bad_credentials    | Mauvais identifiants  |
-| login_no_result    | Pas d'utilisateur trouvé  |
+| error_code   | Description   | Status |
+| ------ | ------- | ------- |
+| login_data_fails    | Données non conformes aux attentes  | 400 |
+| bad_credentials    | Mauvais identifiants  | 401 |
+| login_no_result    | Pas d'utilisateur trouvé  | 404 |
 
 ### Deconnecter l'utilisateur
 
@@ -117,10 +117,10 @@ La méthode doit recevoir un objet json de la sorte :
 
 Erreurs :
 
-| error_code   | Description   |
-| ------ | ------- |
-| logout_data_fails    | Données non conformes aux attentes  |
-| logout_no_result    | Pas d'utilisateur trouvé  |
+| error_code   | Description   | Status |
+| ------ | ------- | ------ |
+| logout_data_fails    | Données non conformes aux attentes  | 400 |
+| logout_no_result    | Pas d'utilisateur trouvé  | 404 |
 
 
 ### Obtenir les details de l'utilisateur
@@ -154,9 +154,9 @@ Retourne les details de l'utilisateur connecté sous la forme suivante
 
 Erreurs :
 
-| error_code   | Description   |
-| ------ | ------- |
-| user_not_found  | Pas d'utilisateur trouvé  |
+| error_code   | Description   | Status |
+| ------ | ------- | ------ |
+| user_not_found  | Pas d'utilisateur trouvé  | 404 |
 
 ### Obtenir la liste des joueurs connectés
 
@@ -184,9 +184,9 @@ Retourne la liste des utilisateurs sous la forme suivante :
 
 Erreurs :
 
-| error_code   | Description   |
-| ------ | ------- |
-| user_connected_fail    | Erreur SQL  |
+| error_code   | Description   | Status |
+| ------ | ------- | ------- |
+| user_connected_fail    | Erreur SQL  | 400 |
 
 ### Obtenir une recharge de jetons
 
@@ -212,11 +212,11 @@ Si l'utilisateur n'est pas autorisé, une réponse au format suivant est retourn
 ```
 Erreurs :
 
-| error_code   | Description   |
-| ------ | ------- |
-| refill_too_soon    | Appel à la méthode trop tot  |
-| user_not_found    | Utilisateur non trouvé  |
-| refill_fail    | Erreur SQL  |
+| error_code   | Description   | Status |
+| ------ | ------- | ------ |
+| refill_too_soon    | Appel à la méthode trop tot  | 400 |
+| user_not_found    | Utilisateur non trouvé  | 404 |
+| refill_fail    | Erreur SQL  | 400 |
 
 ### Mettre à jour les données utilisateur
 
@@ -234,10 +234,10 @@ La méthode doit recevoir un objet json de la sorte :
 
 Erreurs :
 
-| error_code   | Description   |
-| ------ | ------- |
-| user_not_found    | Utilisateur non trouvé  |
-| user_update_fail    | Erreur SQL  |
+| error_code   | Description   | Status |
+| ------ | ------- | ------- |
+| user_not_found    | Utilisateur non trouvé  | 404 |
+| user_update_fail    | Erreur SQL  | 400 |
 
 
 ### Mettre à jour le stack de l'utilisateur
@@ -253,11 +253,11 @@ Retourne un objet json contenant les détails de l'utilisateur
 
 Erreurs :
 
-| error_code   | Description   |
-| ------ | ------- |
-| stack_not_number    | Le montant n'est pas un nombre  |
-| user_not_found    | Utilisateur non trouvé  |
-| user_update_fail    | Erreur SQL  |
+| error_code   | Description   | Status |
+| ------ | ------- | ----- |
+| stack_not_number    | Le montant n'est pas un nombre  | 400 |
+| user_not_found    | Utilisateur non trouvé  | 404 |
+| user_update_fail    | Erreur SQL  | 400 |
 
 ### Supprimer un utilisateur
 
@@ -269,10 +269,10 @@ Le paramètre `{email}` représente l'email de l'utilisateur connecté
 
 Erreurs :
 
-| error_code   | Description   |
-| ------ | ------- |
-| user_not_found    | Utilisateur non trouvé  |
-| delete_fail    | Erreur SQL  |
+| error_code   | Description   | Status |
+| ------ | ------- | ------ |
+| user_not_found    | Utilisateur non trouvé  | 404 |
+| delete_fail    | Erreur SQL  | 400 |
 
 ### Obtenir la liste des tables ouvertes
 
@@ -299,9 +299,9 @@ Retourne la liste des tables ouvertes sous la forme suivante :
 
 Erreurs :
 
-| error_code   | Description   |
-| ------ | ------- |
-| tables_open_fail    | Erreur SQL  |
+| error_code   | Description   | Status |
+| ------ | ------- | ------ |
+| tables_open_fail    | Erreur SQL  | 400 |
 
 ### S'assoir à une table
 
@@ -330,13 +330,13 @@ Retourne un objet json sous la forme suivante :
 
 Erreurs :
 
-| error_code   | Description   |
-| ------ | ------- |
-| table_closed    | Table fermée  |
-| table_full    | Table pleine  |
-| user_already_on_table    | Utilisateur déjà présent à la table  |
-| table_not_found    | Table non trouvée  |
-| user_not_found   | Utilisateur non trouvé  |
+| error_code   | Description   | Status |
+| ------ | ------- | ------- |
+| table_closed    | Table fermée  | 400 |
+| table_full    | Table pleine  | 400 |
+| user_already_on_table    | Utilisateur déjà présent à la table  | 400 |
+| table_not_found    | Table non trouvée  | 404 |
+| user_not_found   | Utilisateur non trouvé  | 404 |
 
 ### Quitter une table
 
@@ -365,8 +365,8 @@ Retourne un objet json sous la forme suivante :
 
 Erreurs :
 
-| error_code   | Description   |
-| ------ | ------- |
-| user_not_on_table    | Utilisateur non présent à cette table  |
-| table_not_found    | Table non trouvée  |
-| user_not_found   | Utilisateur non trouvé |
+| error_code   | Description   | Status |
+| ------ | ------- | ------- |
+| user_not_on_table    | Utilisateur non présent à cette table  | 400 |
+| table_not_found    | Table non trouvée  | 404 |
+| user_not_found   | Utilisateur non trouvé | 404 |
