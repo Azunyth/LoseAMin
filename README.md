@@ -217,3 +217,64 @@ Retourne la liste des tables ouvertes sous la forme suivante :
   ]
 }
 ```
+
+### S'assoir à une table
+
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `GET`   | **user/{email}/table/{id}/sit** |
+
+Le paramètre `{email}` représente l'email de l'utilisateur connecté
+Le paramètre `{id}` représente l'id de la table
+
+
+Retourne un objet json sous la forme suivante :
+
+```json
+{
+  "status": 200,
+  "message": "Place à la table autorisée",
+  "table": {
+          ...
+      },
+  "user": {
+          ...
+      }  
+}
+```
+
+### Quitter une table
+
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `GET`   | **user/{email}/table/{id}/leave** |
+
+Le paramètre `{email}` représente l'email de l'utilisateur connecté
+Le paramètre `{id}` représente l'id de la table
+
+
+Retourne un objet json sous la forme suivante :
+
+```json
+{
+  "status": 200,
+  "message": "Place à la table restaurée",
+  "table": {
+          ...
+      },
+  "user": {
+          ...
+      }  
+}
+```
+
+### Mettre à jour le stack de l'utilisateur
+
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `GET`   | **user/{email}/stack/{amount}** |
+
+Le paramètre `{email}` représente l'email de l'utilisateur connecté
+Le paramètre `{amount}` représente le montant à **ajouter** au stack
+
+Retourne un objet json contenant les détails de l'utilisateur
