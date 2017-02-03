@@ -98,6 +98,45 @@ class UserController extends Controller
       }
     }
 
+    public function updateUserStack($email, $stack) {
+        try {
+            $user = \App\User::where('email', $email)->firstOrFail();
+
+            $amount = ctype_digit($stack) ? intval($stack) : null;
+            if ($amount === null)
+            {
+                return response()->json([
+                    'status' => 400,
+                    'error_code' => 'stack_not_number',
+                    'message' => 'La variable montant n\'est pas un nombre'
+                ]);
+            }
+
+            $user->stack += $amount;
+
+            $user->save();
+
+            return response()->json([
+              'status' => 200,
+              'message' => htmlentities('Stack mis à jour'),
+              'user' => $user
+            ]);
+
+        } catch(ModelNotFoundException $e) {
+            return response()->json([
+                'status' => 400,
+                'error_code' => 'user_not_found',
+                'message' => $e->getMessage()
+            ]);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 400,
+                'error_code' => 'user_update_fail',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
     public function updateUser(Request $request, $email) {
         try {
             $user = \App\User::where('email', $email)->firstOrFail();

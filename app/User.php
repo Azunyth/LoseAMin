@@ -33,4 +33,8 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Table', 'users_tables')
                     ->withTimestamps();
     }
+
+    public function getUsersConnectedCount() {
+        return $this->where('is_connected', 1)->count();
+    }
 }

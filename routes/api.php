@@ -25,6 +25,8 @@ Route::get('user/{email}/table/{id}/sit', 'Api\TableController@sitOnTable');
 
 Route::get('user/{email}/table/{id}/leave', 'Api\TableController@leaveTable');
 
+Route::get('user/{email}/stack/{amount}', 'Api\UserController@updateUserStack');
+
 Route::post('auth/logout', 'Api\AuthController@logout');
 
 Route::post('auth/login', 'Api\AuthController@login');

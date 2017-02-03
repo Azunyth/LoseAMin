@@ -4,14 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Table;
 use App\User;
+use App\Repositories\Table\TableInterface as TableInterface;
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Controllers\Controller;
 
 class TableController extends Controller
 {
-    public function __construct() {
+
+    private $tableRepo;
+
+    public function __construct(TableInterface $table) {
+        $this->tableRepo = $table;
         $this->middleware('auth:api');
     }
 
@@ -54,6 +59,8 @@ class TableController extends Controller
                 $table->seats_available -= 1;
                 $table->last_activity = Carbon::now()->toDateTimeString();
                 $table->save();
+
+                $this->tableRepo->rescaleTable();
 
                 return response()->json([
                     'status' => 200,
@@ -98,6 +105,8 @@ class TableController extends Controller
                 $table->last_activity = Carbon::now()->toDateTimeString();
                 $table->save();
 
+                $this->tableRepo->rescaleTable();
+
                 return response()->json([
                     'status' => 200,
                     'message' => htmlentities('Place à la table restaurée'),
@@ -119,6 +128,10 @@ class TableController extends Controller
                 'message' => $e->getMessage()
             ]);
         }
+    }
+
+    public function test() {
+        $this->tableRepo->rescaleTable();
     }
 
 }

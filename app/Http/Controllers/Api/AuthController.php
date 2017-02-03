@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Table;
-use GuzzleHttp\Client as GuzzleClient;
+use App\Repositories\Table\TableInterface as TableInterface;
 use Laravel\Passport\Client;
 use Laravel\Passport\Token;
 use Illuminate\Http\Request;
@@ -16,8 +16,11 @@ use Validator;
 
 class AuthController extends Controller
 {
-    public function __construct() {
+    private $tableRepo;
+
+    public function __construct(TableInterface $table) {
         $this->middleware('guest');
+        $this->tableRepo = $table;
     }
 
     public function createUser(Request $request) {
@@ -145,6 +148,9 @@ class AuthController extends Controller
                  $user = \App\User::where('email', $email)->first();
                  $user->is_connected = 1;
                  $user->save();
+
+                 $this->tableRepo->rescaleTable();
+
                  return response()->json([
                      'status' => 200,
                      'tokens' => $resContentJson,
@@ -202,6 +208,8 @@ class AuthController extends Controller
 
             $oauthAccessToken = Token::where('client_id', $email)
                                      ->update(['revoked' => 1]);
+
+            $this->tableRepo->rescaleTable();
 
             return response()->json([
               'status' => 200,
