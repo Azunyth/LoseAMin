@@ -55,6 +55,15 @@ La méthode doit recevoir un objet json de la sorte :
 ```
 Retourne l'utilisateur ajouté
 
+Erreurs :
+
+| error_code   | Description   |
+| ------ | ------- |
+| register_data_empty    | Données manquantes  |
+| register_data_fails    | Données non conformes aux attentes  |
+| register_insert_fail    | Erreur SQL  |
+
+
 ### Authentifier un utilisateur
 
 | Auth   | Verbe   | URL   |
@@ -87,6 +96,14 @@ La propriété `tokens` représente les jetons de l'utilisateur.
 **La sous propriété `access_token` est très importante, elle représente le jeton d'authentification à utilier pour les requêtes authentifiées.
 Cette propriété est donc à conserver.**
 
+Erreurs :
+
+| error_code   | Description   |
+| ------ | ------- |
+| login_data_fails    | Données non conformes aux attentes  |
+| bad_credentials    | Mauvais identifiants  |
+| login_no_result    | Pas d'utilisateur trouvé  |
+
 ### Deconnecter l'utilisateur
 
 | Auth   | Verbe   | URL   |
@@ -97,6 +114,14 @@ La méthode doit recevoir un objet json de la sorte :
 ```json
 {"email":"XXX@XX.XX" }
 ```
+
+Erreurs :
+
+| error_code   | Description   |
+| ------ | ------- |
+| logout_data_fails    | Données non conformes aux attentes  |
+| logout_no_result    | Pas d'utilisateur trouvé  |
+
 
 ### Obtenir les details de l'utilisateur
 
@@ -127,6 +152,12 @@ Retourne les details de l'utilisateur connecté sous la forme suivante
 }
 ```
 
+Erreurs :
+
+| error_code   | Description   |
+| ------ | ------- |
+| user_not_found  | Pas d'utilisateur trouvé  |
+
 ### Obtenir la liste des joueurs connectés
 
 | Auth   | Verbe   | URL   |
@@ -150,6 +181,13 @@ Retourne la liste des utilisateurs sous la forme suivante :
 }
 ```
 
+
+Erreurs :
+
+| error_code   | Description   |
+| ------ | ------- |
+| user_connected_fail    | Erreur SQL  |
+
 ### Obtenir une recharge de jetons
 
 | Auth   | Verbe   | URL   |
@@ -172,6 +210,13 @@ Si l'utilisateur n'est pas autorisé, une réponse au format suivant est retourn
   }
 }
 ```
+Erreurs :
+
+| error_code   | Description   |
+| ------ | ------- |
+| refill_too_soon    | Appel à la méthode trop tot  |
+| user_not_found    | Utilisateur non trouvé  |
+| refill_fail    | Erreur SQL  |
 
 ### Mettre à jour les données utilisateur
 
@@ -187,6 +232,33 @@ La méthode doit recevoir un objet json de la sorte :
 ```
 **Tous les paramètres ne sont pas obligatoires dans l'objet json envoyé**
 
+Erreurs :
+
+| error_code   | Description   |
+| ------ | ------- |
+| user_not_found    | Utilisateur non trouvé  |
+| user_update_fail    | Erreur SQL  |
+
+
+### Mettre à jour le stack de l'utilisateur
+
+| Auth   | Verbe   | URL   |
+| ------ | ------- | ----- |
+| Oui    | `GET`   | **user/{email}/stack/{amount}** |
+
+Le paramètre `{email}` représente l'email de l'utilisateur connecté
+Le paramètre `{amount}` représente le montant à **ajouter** au stack
+
+Retourne un objet json contenant les détails de l'utilisateur
+
+Erreurs :
+
+| error_code   | Description   |
+| ------ | ------- |
+| stack_not_number    | Le montant n'est pas un nombre  |
+| user_not_found    | Utilisateur non trouvé  |
+| user_update_fail    | Erreur SQL  |
+
 ### Supprimer un utilisateur
 
 | Auth   | Verbe   | URL   |
@@ -194,6 +266,13 @@ La méthode doit recevoir un objet json de la sorte :
 | Oui    | `DELETE`| **/api/user/{email}** |
 
 Le paramètre `{email}` représente l'email de l'utilisateur connecté
+
+Erreurs :
+
+| error_code   | Description   |
+| ------ | ------- |
+| user_not_found    | Utilisateur non trouvé  |
+| delete_fail    | Erreur SQL  |
 
 ### Obtenir la liste des tables ouvertes
 
@@ -217,6 +296,12 @@ Retourne la liste des tables ouvertes sous la forme suivante :
   ]
 }
 ```
+
+Erreurs :
+
+| error_code   | Description   |
+| ------ | ------- |
+| tables_open_fail    | Erreur SQL  |
 
 ### S'assoir à une table
 
@@ -243,6 +328,16 @@ Retourne un objet json sous la forme suivante :
 }
 ```
 
+Erreurs :
+
+| error_code   | Description   |
+| ------ | ------- |
+| table_closed    | Table fermée  |
+| table_full    | Table pleine  |
+| user_already_on_table    | Utilisateur déjà présent à la table  |
+| table_not_found    | Table non trouvée  |
+| user_not_found   | Utilisateur non trouvé  |
+
 ### Quitter une table
 
 | Auth   | Verbe   | URL   |
@@ -268,13 +363,10 @@ Retourne un objet json sous la forme suivante :
 }
 ```
 
-### Mettre à jour le stack de l'utilisateur
+Erreurs :
 
-| Auth   | Verbe   | URL   |
-| ------ | ------- | ----- |
-| Oui    | `GET`   | **user/{email}/stack/{amount}** |
-
-Le paramètre `{email}` représente l'email de l'utilisateur connecté
-Le paramètre `{amount}` représente le montant à **ajouter** au stack
-
-Retourne un objet json contenant les détails de l'utilisateur
+| error_code   | Description   |
+| ------ | ------- |
+| user_not_on_table    | Utilisateur non présent à cette table  |
+| table_not_found    | Table non trouvée  |
+| user_not_found   | Utilisateur non trouvé |
