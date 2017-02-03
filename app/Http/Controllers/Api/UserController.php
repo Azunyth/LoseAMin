@@ -92,7 +92,7 @@ class UserController extends Controller
       } catch (\Exception $e) {
           return response()->json([
               'status' => 400,
-              'error_code' => 'user_connected_fail',
+              'error_code' => 'refill_fail',
               'message' => $e->getMessage()
           ]);
       }
@@ -190,6 +190,12 @@ class UserController extends Controller
             return response()->json([
                 'status' => 400,
                 'error_code' => 'user_not_found',
+                'message' => $e->getMessage()
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 400,
+                'error_code' => 'delete_fail',
                 'message' => $e->getMessage()
             ]);
         }

@@ -85,7 +85,7 @@ class TableController extends Controller
                 'message' => $qe->getMessage()
             ]);
         } catch(ModelNotFoundException $e) {
-            $errorCode = ($e->getModel() == 'App\Table') ? 'table_no_result' : 'user_no_result';
+            $errorCode = ($e->getModel() == 'App\Table') ? 'table_not_found' : 'user_not_found';
             return response()->json([
                 'status' => 401,
                 'error_code' => $errorCode,
@@ -121,10 +121,10 @@ class TableController extends Controller
                 ]);
             }
         } catch(ModelNotFoundException $e) {
-            $errorCode = ($e->getModel() == 'App\Table') ? 'table_no_result' : 'user_no_result';
+            $errorCode = ($e->getModel() == 'App\Table') ? 'table_not_found' : 'user_not_found';
             return response()->json([
                 'status' => 401,
-                'error_code' => 'user_no_result',
+                'error_code' => $errorCode,
                 'message' => $e->getMessage()
             ]);
         }
