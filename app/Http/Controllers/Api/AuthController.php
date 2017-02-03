@@ -31,7 +31,7 @@ class AuthController extends Controller
                 'status' => 400,
                 'error_code' => 'register_data_empty',
                 'error' => htmlentities('Les données envoyées ne sont pas correctement formées.')
-            ]);
+            ], 400);
         }
 
         $validator = Validator::make($request->input('user'), [
@@ -48,7 +48,7 @@ class AuthController extends Controller
               'error_code' => 'register_data_fails',
               'error' => 'Certaines données sont invalides',
               'message' => $validator->errors()
-          ]);
+          ], 400);
         }
 
 
@@ -80,7 +80,7 @@ class AuthController extends Controller
                 'status' => 400,
                 'error_code' => 'register_insert_fail',
                 'message' => $e->getMessage()
-            ]);
+            ], 400);
         }
 
 
@@ -105,7 +105,7 @@ class AuthController extends Controller
               'error_code' => 'login_data_fails',
               'error' => htmlentities('Certaines données sont invalides'),
               'message' => $validator->errors()
-          ]);
+          ], 400);
         }
 
         $email = $request->input('email');
@@ -143,7 +143,7 @@ class AuthController extends Controller
                      'status' => 401,
                      'error_code' => 'bad_credentials',
                      'message' => $resContentJson->message
-                   ]);
+                 ], 401);
                } else {
                  $user = \App\User::where('email', $email)->first();
                  $user->is_connected = 1;
@@ -163,15 +163,15 @@ class AuthController extends Controller
               return response()->json([
                   'status' => 401,
                   'error_code' => 'bad_credentials',
-                ]);
+              ], 401);
             }
 
         } catch(ModelNotFoundException $e) {
             return response()->json([
-                'status' => 401,
+                'status' => 404,
                 'error_code' => 'login_no_result',
                 'message' => $e->getMessage()
-            ]);
+            ], 404);
         }
 
          return \Route::dispatch($proxy);
@@ -190,7 +190,7 @@ class AuthController extends Controller
               'error_code' => 'logout_data_fails',
               'error' => htmlentities('Certaines données sont invalides'),
               'message' => $validator->errors()
-          ]);
+          ], 400);
         }
 
         try {
@@ -218,10 +218,10 @@ class AuthController extends Controller
 
         } catch(ModelNotFoundException $e) {
             return response()->json([
-                'status' => 401,
+                'status' => 404,
                 'error_code' => 'logout_no_result',
                 'message' => $e->getMessage()
-            ]);
+            ], 404);
         }
 
     }

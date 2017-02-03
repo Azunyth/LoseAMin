@@ -35,7 +35,7 @@ class TableController extends Controller
               'status' => 400,
               'error_code' => 'tables_open_fail',
               'message' => $e->getMessage()
-          ]);
+          ], 400);
       }
     }
 
@@ -50,7 +50,7 @@ class TableController extends Controller
                     'status' => 400,
                     'error_code' => 'table_closed',
                     'message' => 'La table est fermée'
-                ]);
+                ], 400);
             }
 
             if($table->seats_available >= 1) {
@@ -73,7 +73,7 @@ class TableController extends Controller
                     'status' => 400,
                     'error_code' => 'table_full',
                     'message' => 'La table est pleine'
-                ]);
+                ], 400);
             }
 
 
@@ -83,14 +83,14 @@ class TableController extends Controller
                 'error_code' => 'user_already_on_table',
                 'error' => htmlentities('L\'utilisateur est déjà assis à la table'),
                 'message' => $qe->getMessage()
-            ]);
+            ], 400);
         } catch(ModelNotFoundException $e) {
             $errorCode = ($e->getModel() == 'App\Table') ? 'table_not_found' : 'user_not_found';
             return response()->json([
-                'status' => 401,
+                'status' => 404,
                 'error_code' => $errorCode,
                 'message' => $e->getMessage()
-            ]);
+            ], 404);
         }
     }
 
@@ -118,20 +118,16 @@ class TableController extends Controller
                     'status' => 400,
                     'error_code' => 'user_not_on_table',
                     'message' => htmlentities('L\'utilisateur n\'est pas assis à la table')
-                ]);
+                ], 400);
             }
         } catch(ModelNotFoundException $e) {
             $errorCode = ($e->getModel() == 'App\Table') ? 'table_not_found' : 'user_not_found';
             return response()->json([
-                'status' => 401,
+                'status' => 404,
                 'error_code' => $errorCode,
                 'message' => $e->getMessage()
-            ]);
+            ], 404);
         }
-    }
-
-    public function test() {
-        $this->tableRepo->rescaleTable();
     }
 
 }

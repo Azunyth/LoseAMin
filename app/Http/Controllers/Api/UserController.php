@@ -28,16 +28,17 @@ class UserController extends Controller
 
       } catch (ModelNotFoundException $e) {
           return response()->json([
-              'status' => 400,
+              'status' => 404,
               'error_code' => 'user_not_found',
               'message' => $e->getMessage()
-          ]);
+          ], 404);
       }
     }
 
     public function getUsersConnected() {
         try {
-            $users = \App\User::where('is_connected', 1)->get();
+            $users = \App\User::select('id', 'username', 'firstname', 'lastname')
+                                ->where('is_connected', 1)->get();
 
             return response()->json([
               'status' => 200,
@@ -50,7 +51,7 @@ class UserController extends Controller
                 'status' => 400,
                 'error_code' => 'user_connected_fail',
                 'message' => $e->getMessage()
-            ]);
+            ], 400);
         }
 
     }
@@ -69,7 +70,7 @@ class UserController extends Controller
                   'error_code' => 'refill_too_soon',
                   'message' => 'Vous devez attendre '.$diff.' minutes',
                   'error' => [ 'minutes' => $diff ]
-              ]);
+              ], 400);
           }
 
           $user->stack += 100;
@@ -85,16 +86,16 @@ class UserController extends Controller
 
       } catch(ModelNotFoundException $e) {
           return response()->json([
-              'status' => 400,
+              'status' => 404,
               'error_code' => 'user_not_found',
               'message' => $e->getMessage()
-          ]);
+          ], 404);
       } catch (\Exception $e) {
           return response()->json([
               'status' => 400,
               'error_code' => 'refill_fail',
               'message' => $e->getMessage()
-          ]);
+          ], 400);
       }
     }
 
@@ -109,7 +110,7 @@ class UserController extends Controller
                     'status' => 400,
                     'error_code' => 'stack_not_number',
                     'message' => 'La variable montant n\'est pas un nombre'
-                ]);
+                ], 400);
             }
 
             $user->stack += $amount;
@@ -124,16 +125,16 @@ class UserController extends Controller
 
         } catch(ModelNotFoundException $e) {
             return response()->json([
-                'status' => 400,
+                'status' => 404,
                 'error_code' => 'user_not_found',
                 'message' => $e->getMessage()
-            ]);
+            ], 404);
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 400,
                 'error_code' => 'user_update_fail',
                 'message' => $e->getMessage()
-            ]);
+            ], 400);
         }
     }
 
@@ -159,16 +160,16 @@ class UserController extends Controller
 
         } catch(ModelNotFoundException $e) {
             return response()->json([
-                'status' => 400,
+                'status' => 404,
                 'error_code' => 'user_not_found',
                 'message' => $e->getMessage()
-            ]);
+            ], 404);
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 400,
                 'error_code' => 'user_update_fail',
                 'message' => $e->getMessage()
-            ]);
+            ], 400);
         }
     }
 
@@ -188,16 +189,16 @@ class UserController extends Controller
 
         } catch (ModelNotFoundException $e) {
             return response()->json([
-                'status' => 400,
+                'status' => 404,
                 'error_code' => 'user_not_found',
                 'message' => $e->getMessage()
-            ]);
+            ], 404);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 400,
                 'error_code' => 'delete_fail',
                 'message' => $e->getMessage()
-            ]);
+            ], 400);
         }
     }
 
