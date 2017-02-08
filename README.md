@@ -246,7 +246,7 @@ Erreurs :
 
 | Auth   | Verbe   | URL   |
 | ------ | ------- | ----- |
-| Oui    | `GET`   | **user/{email}/stack/{amount}** |
+| Oui    | `GET`   | **/api/user/{email}/stack/{amount}** |
 
 Le paramètre `{email}` représente l'email de l'utilisateur connecté
 Le paramètre `{amount}` représente le montant à **ajouter** au stack
@@ -309,7 +309,7 @@ Erreurs :
 
 | Auth   | Verbe   | URL   |
 | ------ | ------- | ----- |
-| Oui    | `GET`   | **user/{email}/table/{id}/sit** |
+| Oui    | `GET`   | **/api/user/{email}/table/{id}/sit** |
 
 Le paramètre `{email}` représente l'email de l'utilisateur connecté
 Le paramètre `{id}` représente l'id de la table
@@ -344,7 +344,7 @@ Erreurs :
 
 | Auth   | Verbe   | URL   |
 | ------ | ------- | ----- |
-| Oui    | `GET`   | **user/{email}/table/{id}/leave** |
+| Oui    | `GET`   | **/api/user/{email}/table/{id}/leave** |
 
 Le paramètre `{email}` représente l'email de l'utilisateur connecté
 Le paramètre `{id}` représente l'id de la table
